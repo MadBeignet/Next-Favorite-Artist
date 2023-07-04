@@ -1,3 +1,7 @@
+:root {
+  --main-background: rgb(67, 80, 112);
+}
+
 .App {
   text-align: center;
 }
@@ -6,6 +10,7 @@
   height: 75px;
   background-color: rgb(24, 24, 28);
   display: table;
+  color: white;
 }
 .header-text {
   display: table-cell;
@@ -21,41 +26,54 @@
   margin-right: 50px;
   background-color: rgb(48, 48, 78);
   border: none;
-  color: lightgray;
+  color: rgb(255, 207, 207);
   width: 75px;
   height: 35px;
   border-radius: 5px;
   text-decoration: none;
   font-size: 13px;
+  padding-top: 2px;
+}
+.login-logout:hover {
+  cursor: pointer;
 }
 
 .container {
-  margin-top: 50px;
+  margin-top: 25px;
   margin-bottom: 50px;
   display: grid;
-  margin-left: 50px;
+  margin-left: 1vw;
   vertical-align: middle;
-  grid-template-columns: 300px 350px 350px;
+  grid-template-columns: 13vw 15vw 15vw 15vw;
+  grid-gap: 5vw;
 }
 .profile-container {
-  display: table;
+  display: grid;
   width: 200px;
-  height: fit-content;
+  background-color: var(--main-background);
+  border-radius: 12px;
+  color: white;
+  padding-bottom: 10px;
+  height: min(calc(100vh - 150px), 325px);
+  overflow-y: scroll;
+  justify-content: center;
 }
 .profile-picture {
   width: 100px;
   height: 100px;
   position: relative;
+  left: 22px;
 }
 .artist-container {
-  display: table;
+  display: grid;
   vertical-align: middle;
+  height: calc(100vh - 150px);
+  overflow-y: scroll;
 }
 .artist {
   margin-bottom: 5px;
   display: table;
   /* grid-template-columns: 100px 100px; */
-  grid-gap: 10px;
   vertical-align: middle;
 }
 .artist-name {
@@ -64,10 +82,14 @@
   display: table-cell;
   position: relative;
   vertical-align: middle;
+  text-align: start;
+  left: 15px;
 }
 .song-container {
   text-align: start;
-  display: table;
+  display: grid;
+  height: calc(100vh - 150px);
+  overflow-y: scroll;
 }
 .song {
   display: table;
@@ -86,4 +108,64 @@
   display: table-cell;
   width: 250px;
   margin: 7px;
+}
+
+.blank-artist-picture {
+  width: 100px;
+  height: 100px;
+  background-color: var(--main-background);
+  border-radius: 10px;
+  opacity: 0.9;
+  display: table-cell;
+}
+.blank-artist-name-cell {
+  width: 150px;
+  vertical-align: middle;
+  display: table-cell;
+}
+.blank-artist-name {
+  left: 15px;
+  width: 150px;
+  height: 35px;
+  background-color: var(--main-background);
+  border-radius: 10px;
+  opacity: 0.9;
+  position: relative;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.blank-track-picture {
+  width: 35px;
+  height: 35px;
+  background-color: var(--main-background);
+  border-radius: 5px;
+  opacity: 0.9;
+  display: table-cell;
+}
+
+.blank-track-name-cell {
+  width: 200px;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.blank-track-name {
+  left: 15px;
+  width: 150px;
+  height: 30px;
+  background-color: var(--main-background);
+  border-radius: 8px;
+  opacity: 0.9;
+  position: relative;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.profile-link {
+  text-decoration: none;
+  color: white;
+}
+.profile-link:hover {
+  text-decoration: underline;
 }
