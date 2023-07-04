@@ -1,7 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { type } from '@testing-library/user-event/dist/type';
 
 const CLIENT_ID = "20397efaf16a42a2a08d6d9bc9b96a8a";
 const REDIRECT_URI = "http://localhost:3000";
@@ -19,8 +18,6 @@ function App() {
   const [topArtists, setTopArtists] = useState([]);
   const [topArtistList, setTopArtistList] = useState([]);
   const [topTracks, setTopTracks] = useState([]);
-  const [topTrackIDs, setTopTrackIDs] = useState([]);
-  const [topRelatedArtists, setTopRelatedArtists] = useState([]);
   const [topRelatedArtistsList, setTopRelatedArtistsList] = useState([]);
   const [topRecommendedArtistsIDs, setTopRecommendedArtistsIDs] = useState([]);
   const [recommendedArtists, setRecommendedArtists] = useState([]);
@@ -57,8 +54,6 @@ function App() {
     setTopArtists([]);
     setTopTracks([]);
     setTopArtistList([]);
-    setTopTrackIDs([]);
-    setTopRelatedArtists([]);
     setTopRelatedArtistsList([]);
 
     window.localStorage.removeItem('token');
@@ -70,6 +65,10 @@ function App() {
     const { data } = await axios.get(BASE_ROUTE + "/me", {
       headers: {
         Authorization: `Bearer ${token}`
+      }
+    }).catch(err => {
+      if (err.response.status === 401) {
+        logout();
       }
     });
     setUser(data);
@@ -84,6 +83,10 @@ function App() {
       },
       params: {
         limit: 20
+      }
+    }).catch(err => {
+      if (err.response.status === 401) {
+        logout();
       }
     });
     setTopArtists(data.items);
@@ -148,7 +151,14 @@ function App() {
       return {
         data: response.data,
       }
-    }).catch(err => console.log(err));
+    }).catch(err => {
+      if (err.response.status === 401) {
+        logout();
+      }
+      if (err.response.status === 429) {
+        console.log(err.response);
+      }
+    });
   }
 
   const resolveArtists = (allArtistsIDs) => {
@@ -196,10 +206,6 @@ function App() {
       }
     });
     setTopTracks(data.items);
-    setTopTrackIDs(data.items.map((track) => {
-      return track.id;
-    }
-    ))
   }
 
   const displayUser = () => {
@@ -225,7 +231,7 @@ function App() {
           return (
             <div className="artist" key={artist.id}>
             <img className="profile-picture" src={artist.images[0].url} alt="artist" width = "100px"/>
-            <span>{artist.name}</span>
+            <h3 className="artist-name">{artist.name}</h3>
           </div>
           );
         })}
@@ -245,11 +251,14 @@ function App() {
 
 
   return (
-    <div>
-      <h1>Next Favorite Artist</h1>
-      {!token
-      ? <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPES}`}>Login to Spotify</a>
-      : <button onClick={logout}>Logout</button> }
+    <div className="App">
+      <div className="header">
+        <h1 className="header-text">Next Favorite Artist</h1>
+        {!token
+      ? <a className="login-logout" href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPES}`}>Login to Spotify</a>
+      : <button className="login-logout" onClick={logout}>Logout</button> }
+        </div>
+      
       {display()}
       { recommendedArtists.length !== 0 
       ? displayRecommendedArtists() 

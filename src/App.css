@@ -1,15 +1,44 @@
 .App {
   text-align: center;
 }
+.header {
+  width: 100%;
+  height: 75px;
+  background-color: rgb(24, 24, 28);
+  display: table;
+}
+.header-text {
+  display: table-cell;
+  vertical-align: middle;
+  margin: 0;
+}
+
+.login-logout {
+  position: absolute;
+  top: 22px;
+  left: 30px;
+  margin: 0;
+  margin-right: 50px;
+  background-color: rgb(48, 48, 78);
+  border: none;
+  color: lightgray;
+  width: 75px;
+  height: 35px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 13px;
+}
 
 .container {
   margin-top: 50px;
   margin-bottom: 50px;
-  display: flex;
+  display: grid;
   margin-left: 50px;
+  vertical-align: middle;
+  grid-template-columns: 200px 250px 250px;
 }
 .profile-container {
-  display: grid;
+  display: table;
   width: 200px;
   height: fit-content;
 }
@@ -19,17 +48,25 @@
   position: relative;
 }
 .artist-container {
-  display: grid;
-  grid-template-columns: 250px;
+  display: table;
+  vertical-align: middle;
 }
 .artist {
   margin-bottom: 5px;
-  display: grid;
+  display: table;
+  /* grid-template-columns: 100px 100px; */
+  grid-gap: 10px;
+  vertical-align: middle;
+}
+.artist-name {
+  width: 100px;
   height: 100px;
-  grid-template-columns: 100px 100px;
+  display: table-cell;
+  position: relative;
+  /* text-align: center; */
   vertical-align: middle;
 }
 .song-container {
-  display: grid;
+  display: table;
   grid-template-columns: 250px;
 }
