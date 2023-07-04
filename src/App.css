@@ -35,7 +35,7 @@
   display: grid;
   margin-left: 50px;
   vertical-align: middle;
-  grid-template-columns: 200px 250px 250px;
+  grid-template-columns: 300px 350px 350px;
 }
 .profile-container {
   display: table;
@@ -63,10 +63,27 @@
   height: 100px;
   display: table-cell;
   position: relative;
-  /* text-align: center; */
   vertical-align: middle;
 }
 .song-container {
+  text-align: start;
   display: table;
-  grid-template-columns: 250px;
+}
+.song {
+  display: table;
+  vertical-align: middle;
+  grid-template-columns: 25px 250px;
+  margin-bottom: 7px;
+}
+.song-picture {
+  display: table-cell;
+  width: 25px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.song-name {
+  vertical-align: middle;
+  display: table-cell;
+  width: 250px;
+  margin: 7px;
 }

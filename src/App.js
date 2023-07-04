@@ -241,7 +241,15 @@ function App() {
         
         <div className="song-container">
           <h2>Recent Top Tracks</h2>
-          {topTracks.map(track => <p key={track.id}>{track.name}</p>)}
+          {topTracks.map(track => {
+            return (
+              <div className="song" key={track.id}>
+                <img src={track.album.images[0].url} className="song-picture" alt="album" />
+                <p className="song-name"key={track.id}>{track.name}</p>
+                </div>
+            )
+          
+  })}
         </div>
       </div>
     )
