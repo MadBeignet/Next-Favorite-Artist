@@ -2,8 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const NUM_TOP_ARTISTS = 1;
-const NUM_REC_ARTISTS = 1;
+const NUM_TOP_ARTISTS = 10;
 const NUM_TOP_TRACKS = 100;
 
 const CLIENT_ID = "20397efaf16a42a2a08d6d9bc9b96a8a";
@@ -54,6 +53,7 @@ function App() {
     setTopTracks([]);
     setTopArtistList([]);
     setTopRelatedArtistsList([]);
+    setRecommendedArtists([]);
 
     window.localStorage.removeItem("token");
   };
@@ -83,6 +83,7 @@ function App() {
         },
         params: {
           limit: NUM_TOP_ARTISTS,
+          time_range: "medium_term",
         },
       })
       .catch((err) => {
@@ -104,17 +105,19 @@ function App() {
   useEffect(() => {
     if (!topRelatedArtistsList) return;
     const counts = {};
-    topRelatedArtistsList.forEach((a) => {
+    topRelatedArtistsList.forEach((a, ind) => {
       if (a.id in counts) {
-        counts[a.id] += 1;
+        counts[a.id] += Math.ceil((topRelatedArtistsList.length - ind) / 20);
       } else {
-        counts[a.id] = 1;
+        counts[a.id] = Math.ceil((topRelatedArtistsList.length - ind) / 20);
       }
     });
     setRecommendedArtists(
       Object.keys(counts)
         .sort((a, b) => counts[b] - counts[a])
+        .filter((a) => !topArtistList.includes(a))
         .map((art) => idToArtist(art))
+        .slice(0, 50)
     );
   }, [topRelatedArtistsList]);
 
@@ -124,9 +127,6 @@ function App() {
       .get(BASE_ROUTE + "/artists/" + artist + "/related-artists", {
         headers: {
           Authorization: `Bearer ${token}`,
-        },
-        params: {
-          limit: NUM_REC_ARTISTS,
         },
       })
       .then((response) => {
@@ -142,12 +142,7 @@ function App() {
   const getRelatedArtists = async (artists) => {
     resolvePromises(artists)
       .then((resp) => {
-        setTopRelatedArtistsList(
-          resp
-            .map((d) => d.data.artists)
-            .flat()
-            .filter((a) => !topArtistList.includes(a.id))
-        );
+        setTopRelatedArtistsList(resp.map((d) => d.data.artists).flat());
       })
       .catch((e) => console.log(e));
   };
