@@ -148,6 +148,7 @@ function App() {
   };
 
   const displayArtists = (arts) => {
+    const arr = [...Array(10 + 1).keys()].slice(1);
     if (arts.length !== 0) {
       return (
         <div className="artists">
@@ -170,16 +171,23 @@ function App() {
       return (
         <div className="artists">
           <div className="artist">
-            <div className="blank-artist-picture"></div>
-            <div className="blank-artist-name-cell">
-              <div className="blank-artist-name"></div>
-            </div>
+            {arr.map((i) => {
+              return (
+                <div key={i}>
+                  <div className="blank-artist-picture"></div>
+                  <div className="blank-artist-name-cell">
+                    <div className="blank-artist-name"></div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       );
     }
   };
   const displayTracks = (tracks) => {
+    const arr = [...Array(100 + 1).keys()].slice(1);
     if (tracks.length !== 0) {
       return (
         <div>
@@ -202,10 +210,16 @@ function App() {
     } else {
       return (
         <div>
-          <div className="blank-track-picture"></div>
-          <div className="blank-track-name-cell">
-            <div className="blank-track-name"></div>
-          </div>
+          {arr.map((i) => {
+            return (
+              <div key={i}>
+                <div className="blank-track-picture"></div>
+                <div className="blank-track-name-cell">
+                  <div className="blank-track-name"></div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       );
     }
