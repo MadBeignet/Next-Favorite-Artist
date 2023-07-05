@@ -162,6 +162,7 @@ function App() {
                 <img
                   src={a?.images ? a?.images[0]?.url : null}
                   width="100px"
+                  height="100px"
                   alt="artist"
                 />
                 <h3 className="artist-name">{a?.name}</h3>
