@@ -44,7 +44,7 @@
   display: grid;
   margin-left: 1vw;
   vertical-align: middle;
-  grid-template-columns: 13vw 15vw 15vw 15vw;
+  grid-template-columns: 20vw 20vw 20vw 20vw;
   grid-gap: 5vw;
 }
 .profile-container {

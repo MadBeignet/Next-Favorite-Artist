@@ -2,7 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const NUM_TOP_ARTISTS = 20;
+const NUM_TOP_ARTISTS = 1;
 const NUM_REC_ARTISTS = 1;
 const NUM_TOP_TRACKS = 100;
 
@@ -12,7 +12,7 @@ const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 const SCOPES = "user-follow-read user-read-recently-played user-top-read";
 const BASE_ROUTE = "https://api.spotify.com/v1";
-const makeArtistAPICalls = false;
+const makeArtistAPICalls = true;
 const makeUserAPICalls = true;
 
 function App() {
@@ -98,19 +98,23 @@ function App() {
     if (!topArtistList) return;
     getRelatedArtists(topArtistList);
   }, [topArtistList]);
-
+  const idToArtist = (artist) => {
+    return topRelatedArtistsList.find((a) => artist === a.id);
+  };
   useEffect(() => {
     if (!topRelatedArtistsList) return;
     const counts = {};
     topRelatedArtistsList.forEach((a) => {
-      if (a in counts) {
-        counts[a] += 1;
+      if (a.id in counts) {
+        counts[a.id] += 1;
       } else {
-        counts[a] = 1;
+        counts[a.id] = 1;
       }
     });
     setRecommendedArtists(
-      Object.keys(counts).sort((a, b) => counts[b] - counts[a])
+      Object.keys(counts)
+        .sort((a, b) => counts[b] - counts[a])
+        .map((art) => idToArtist(art))
     );
   }, [topRelatedArtistsList]);
 
@@ -155,8 +159,12 @@ function App() {
           {arts.map((a) => {
             return (
               <div key={arts.id} className="artist">
-                <img src={a.images[0].url} width="100px" alt="artist" />
-                <h3 className="artist-name">{a.name}</h3>
+                <img
+                  src={a?.images ? a?.images[0]?.url : null}
+                  width="100px"
+                  alt="artist"
+                />
+                <h3 className="artist-name">{a?.name}</h3>
               </div>
             );
           })}
@@ -183,7 +191,7 @@ function App() {
             return (
               <div key={track.id} className="song">
                 <img
-                  src={track.album.images[0].url}
+                  src={track?.album?.images[0]?.url}
                   className="song-picture"
                   alt="album"
                 />
@@ -255,7 +263,7 @@ function App() {
           {displayTracks(topTracks)}
         </div>
 
-        <div>
+        <div className="artist-container">
           <h2>Recommended Artists</h2>
           {displayArtists(recommendedArtists)}
         </div>
