@@ -6,7 +6,7 @@ const NUM_TOP_ARTISTS = 10;
 const NUM_TOP_TRACKS = 100;
 
 const CLIENT_ID = "20397efaf16a42a2a08d6d9bc9b96a8a";
-const REDIRECT_URI = "http://localhost:3000";
+const REDIRECT_URI = "https://www.nextfavartist.dev";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 const SCOPES = "user-follow-read user-read-recently-played user-top-read";
