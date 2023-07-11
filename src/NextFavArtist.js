@@ -157,7 +157,7 @@ function NextFavArtist() {
         .sort((a, b) => counts[b] - counts[a])
         .filter((a) => !topArtistList.includes(a))
         .map((art) => idToArtist(art))
-        .slice(0, 50)
+        .slice(0, counts.length > 50 ? 50 : counts.length)
     );
   }, [topRelatedArtistsList, topArtistList]);
 
