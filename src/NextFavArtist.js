@@ -13,7 +13,7 @@ const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 const SCOPES = "user-top-read";
 const BASE_ROUTE = "https://api.spotify.com/v1";
-const makeArtistAPICalls = true;
+const makeArtistAPICalls = false;
 const makeUserAPICalls = true;
 
 function NextFavArtist() {
@@ -272,7 +272,7 @@ function NextFavArtist() {
         </div>
 
         <div className="artist-container">
-          <h2>Recommended Artists</h2>
+          <h2>Come back at ~7:30pm</h2>
           {displayArtists(recommendedArtists)}
         </div>
       </div>
@@ -298,7 +298,7 @@ function NextFavArtist() {
       case "recommended-artists":
         return (
           <div className="artist-container">
-            <h2>Recommended Artists</h2>
+            <h2>Come back at ~7:30pm</h2>
             {displayArtists(recommendedArtists)}
           </div>
         );
