@@ -1,21 +1,21 @@
 import "./NextFavArtist.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import spotify_logo from "./Spotify_Logo_CMYK_White.png";
 
 const NUM_TOP_ARTISTS = 10;
 const NUM_TOP_ARTISTS_USED = 40;
 const NUM_TOP_TRACKS = 100;
-const NUM_REC_ARTISTS = 1;
+const NUM_REC_ARTISTS = 20;
 
-const CLIENT_ID = "20397efaf16a42a2a08d6d9bc9b96a8a";
-const REDIRECT_URI = "http://localhost:3000";
+const CLIENT_ID = process.env.CLIENT_ID;
+const REDIRECT_URI = "https://www.nextfavartist.dev";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 const SCOPES = "user-top-read user-read-private";
 const BASE_ROUTE = "https://api.spotify.com/v1";
-const makeArtistAPICalls = false;
-const makeUserAPICalls = false;
+const makeArtistAPICalls = true;
+const makeUserAPICalls = true;
 
 function NextFavArtist() {
   const [token, setToken] = useState("");
@@ -100,7 +100,7 @@ function NextFavArtist() {
   }, [token]);
 
   const logout = () => {
-    console.log("logging out");
+    // console.log("logging out");
     setToken("");
     setUser({});
     setTopArtists([]);
@@ -141,6 +141,37 @@ function NextFavArtist() {
     };
     getRelatedArtists(topArtists.map((a) => a.id));
   }, [topArtists, token]);
+  useEffect(() => {
+    if (!recommendedArtists || !token || !user?.country) return;
+    const getTopTrack = async (artist) => {
+      return axios
+        .get(BASE_ROUTE + "/artists/" + artist.id + "/top-tracks", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            country: user.country,
+          },
+        })
+        .then((response) => {
+          return {
+            data: response.data.tracks[0],
+          };
+        })
+        .catch((err) => console.log(err));
+    };
+    const resolvePromises = (allArtists) => {
+      return Promise.all(recommendedArtists.map((a) => getTopTrack(a)));
+    };
+    const getTopTracks = async (artists) => {
+      resolvePromises(artists)
+        .then((resp) => {
+          setRecommendedArtistsTracks(resp.map((d) => d.data));
+        })
+        .catch((e) => console.log(e));
+    };
+    getTopTracks(recommendedArtists);
+  }, [recommendedArtists, token, user?.country]);
 
   useEffect(() => {
     if (!topRelatedArtistsList) return;
@@ -162,43 +193,12 @@ function NextFavArtist() {
         .map((art) => idToArtist(art))
         .slice(
           0,
-          counts.length > NUM_REC_ARTISTS ? NUM_REC_ARTISTS : counts.length
+          Object.keys(counts).length > NUM_REC_ARTISTS
+            ? NUM_REC_ARTISTS
+            : Object.keys(counts).length
         )
     );
   }, [topRelatedArtistsList, topArtistList]);
-
-  useEffect(() => {
-    if (recommendedArtists.length === 0 || !token) return;
-    const getTopTrack = async (artist) => {
-      return axios
-        .get(BASE_ROUTE + "/artists/" + artist.id + "/top-tracks", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            country: user.country,
-          },
-        })
-        .then((response) => {
-          return {
-            data: response.data[0],
-          };
-        })
-        .catch((err) => console.log(err));
-    };
-    const resolvePromises = (allArtists) => {
-      return Promise.all(recommendedArtists.map((a) => getTopTrack(a)));
-    };
-    const getTopTracks = async (artists) => {
-      resolvePromises(artists)
-        .then((resp) => {
-          // console.log(resp.map((d) => d.data.tracks));
-          setRecommendedArtistsTracks(resp.map((d) => d.data.tracks));
-        })
-        .catch((e) => console.log(e));
-    };
-    getTopTracks(recommendedArtists);
-  }, [recommendedArtists, token, user]);
 
   const displayArtists = (arts) => {
     const arr = [...Array(10 + 1).keys()].slice(1);
@@ -239,6 +239,8 @@ function NextFavArtist() {
   };
   const displayRecommendedArtists = (arts) => {
     const arr = [...Array(10 + 1).keys()].slice(1);
+    // console.log(arts);
+    // console.log(recommendedArtistsTracks);
     if (arts.length !== 0 && recommendedArtistsTracks.length !== 0) {
       return (
         <div align="middle">
@@ -252,21 +254,23 @@ function NextFavArtist() {
                   alt="artist"
                 />
                 <h3 className="artist-name">{a?.name}</h3>
-                <iframe
-                  title={"test"}
-                  src={
-                    "https://open.spotify.com/embed/track/" +
-                    recommendedArtistsTracks[ind]?.id +
-                    "?utm_source=generator"
-                  }
-                  height="80px"
-                  allow="encrypted-media"
-                  style={{
-                    transform: "scale(0.85, 0.95)",
-                    border: "none",
-                    borderRadius: "12px",
-                  }}
-                ></iframe>
+                <div className="blank-embed-cell">
+                  <iframe
+                    title={"test"}
+                    src={
+                      "https://open.spotify.com/embed/track/" +
+                      recommendedArtistsTracks[ind]?.id +
+                      "?utm_source=generator"
+                    }
+                    height="80px"
+                    allow="encrypted-media"
+                    style={{
+                      border: "none",
+                      borderRadius: "12px",
+                      marginLeft: "10px",
+                    }}
+                  ></iframe>
+                </div>
                 {/* <p className="artist-track-name">{tracks[ind]?.name}</p> */}
               </div>
             );

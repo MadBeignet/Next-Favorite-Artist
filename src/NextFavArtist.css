@@ -234,7 +234,7 @@
   /* margin-bottom: 5px; */
   vertical-align: middle;
 }
-@media (min-width: 1280px) {
+@media (min-width: 1320px) {
   .blank-embed-cell {
     display: table-cell;
   }
