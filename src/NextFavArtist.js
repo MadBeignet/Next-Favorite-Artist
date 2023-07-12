@@ -15,7 +15,7 @@ const RESPONSE_TYPE = "token";
 const SCOPES = "user-top-read user-read-private";
 const BASE_ROUTE = "https://api.spotify.com/v1";
 const makeArtistAPICalls = false;
-const makeUserAPICalls = true;
+const makeUserAPICalls = false;
 
 function NextFavArtist() {
   const [token, setToken] = useState("");

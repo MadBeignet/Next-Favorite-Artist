@@ -74,19 +74,19 @@
   overflow-y: scroll;
 }
 .artist {
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   display: table;
   /* grid-template-columns: 100px 100px; */
   vertical-align: middle;
 }
 .artist-name {
-  width: 90px;
+  width: 100px;
   height: 100px;
   display: table-cell;
   position: relative;
   vertical-align: middle;
   text-align: start;
-  left: 15px;
+  left: 10px;
 }
 .song-container {
   text-align: start;
@@ -231,7 +231,7 @@
   display: table;
   /* grid-template-columns: 100px 100px 250px;
   grid-gap: 5px; */
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   vertical-align: middle;
 }
 @media (min-width: 1280px) {
