@@ -18,7 +18,7 @@
   display: table-cell;
   vertical-align: middle;
   margin: 0;
-  font-size: 20px;
+  font-size: 28px;
 }
 
 .login-logout {
@@ -197,7 +197,7 @@
     left: min(20px, 5vw);
     top: min(20px, 5vw);
     width: min(60px, 20vw);
-    height: min(30px, 10vw);
+    height: min(35px, 10vw);
   }
   .spotify-logo {
     top: min(20px, 2vw);
