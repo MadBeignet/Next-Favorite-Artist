@@ -47,7 +47,7 @@
   display: grid;
   margin-left: 1vw;
   vertical-align: middle;
-  grid-template-columns: min(200px, 20vw) min(275px, 25vw) min(300px, 24vw) 1fr;
+  grid-template-columns: min(200px, 20vw) min(250px, 25vw) min(300px, 24vw) 1fr;
   grid-gap: 10px;
 }
 .profile-container {
@@ -110,6 +110,7 @@
   vertical-align: middle;
   display: table-cell;
   width: 15.5vw;
+  padding: 5px;
   margin: 7px;
 }
 
