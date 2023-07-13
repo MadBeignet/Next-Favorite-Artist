@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import spotify_logo from "./Spotify_Logo_CMYK_White.png";
 
+console.log(process.env.CLIENT_ID);
+
 const NUM_TOP_ARTISTS = 10;
 const NUM_TOP_ARTISTS_USED = 40;
 const NUM_TOP_TRACKS = 100;
