@@ -1,5 +1,5 @@
 import "./NextFavArtist.css";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import spotify_logo from "./Spotify_Logo_CMYK_White.png";
 
