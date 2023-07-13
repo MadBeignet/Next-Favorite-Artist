@@ -6,12 +6,13 @@ import spotify_logo from "./Spotify_Logo_CMYK_White.png";
 const NUM_TOP_ARTISTS = 10;
 const NUM_TOP_ARTISTS_USED = 40;
 const NUM_TOP_TRACKS = 100;
+const NUM_REC_ARTISTS = 20;
 
-const CLIENT_ID = "20397efaf16a42a2a08d6d9bc9b96a8a";
-const REDIRECT_URI = "http://localhost:3000";
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+const REDIRECT_URI = "https://www.nextfavartist.dev";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
-const SCOPES = "user-top-read";
+const SCOPES = "user-top-read user-read-private";
 const BASE_ROUTE = "https://api.spotify.com/v1";
 const makeArtistAPICalls = true;
 const makeUserAPICalls = true;
@@ -24,6 +25,7 @@ function NextFavArtist() {
   const [topTracks, setTopTracks] = useState([]);
   const [topRelatedArtistsList, setTopRelatedArtistsList] = useState([]);
   const [recommendedArtists, setRecommendedArtists] = useState([]);
+  const [recommendedArtistsTracks, setRecommendedArtistsTracks] = useState([]);
   const [page, setPage] = useState("top-artists");
 
   useEffect(() => {
@@ -60,7 +62,7 @@ function NextFavArtist() {
       setUser(data);
     };
     const getTopArtists = async () => {
-      if (!makeUserAPICalls) return;
+      if (!makeUserAPICalls || !token) return;
       const { data } = await axios
         .get(BASE_ROUTE + "/me/top/artists", {
           headers: {
@@ -98,6 +100,7 @@ function NextFavArtist() {
   }, [token]);
 
   const logout = () => {
+    // console.log("logging out");
     setToken("");
     setUser({});
     setTopArtists([]);
@@ -110,7 +113,7 @@ function NextFavArtist() {
   };
 
   useEffect(() => {
-    if (!topArtists) return;
+    if (!topArtists || !token) return;
     const getRelated = (artist) => {
       if (!makeArtistAPICalls) return;
       return axios
@@ -138,6 +141,37 @@ function NextFavArtist() {
     };
     getRelatedArtists(topArtists.map((a) => a.id));
   }, [topArtists, token]);
+  useEffect(() => {
+    if (!recommendedArtists || !token || !user?.country) return;
+    const getTopTrack = async (artist) => {
+      return axios
+        .get(BASE_ROUTE + "/artists/" + artist.id + "/top-tracks", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            country: user.country,
+          },
+        })
+        .then((response) => {
+          return {
+            data: response.data.tracks[0],
+          };
+        })
+        .catch((err) => console.log(err));
+    };
+    const resolvePromises = (allArtists) => {
+      return Promise.all(recommendedArtists.map((a) => getTopTrack(a)));
+    };
+    const getTopTracks = async (artists) => {
+      resolvePromises(artists)
+        .then((resp) => {
+          setRecommendedArtistsTracks(resp.map((d) => d.data));
+        })
+        .catch((e) => console.log(e));
+    };
+    getTopTracks(recommendedArtists);
+  }, [recommendedArtists, token, user?.country]);
 
   useEffect(() => {
     if (!topRelatedArtistsList) return;
@@ -157,7 +191,12 @@ function NextFavArtist() {
         .sort((a, b) => counts[b] - counts[a])
         .filter((a) => !topArtistList.includes(a))
         .map((art) => idToArtist(art))
-        .slice(0, 50)
+        .slice(
+          0,
+          Object.keys(counts).length > NUM_REC_ARTISTS
+            ? NUM_REC_ARTISTS
+            : Object.keys(counts).length
+        )
     );
   }, [topRelatedArtistsList, topArtistList]);
 
@@ -165,7 +204,7 @@ function NextFavArtist() {
     const arr = [...Array(10 + 1).keys()].slice(1);
     if (arts.length !== 0) {
       return (
-        <div className="artists">
+        <div align="middle">
           {arts.map((a) => {
             return (
               <div key={arts.id} className="artist">
@@ -183,7 +222,7 @@ function NextFavArtist() {
       );
     } else {
       return (
-        <div>
+        <div align="middle">
           {arr.map((i) => {
             return (
               <div key={i} className="artist">
@@ -198,11 +237,71 @@ function NextFavArtist() {
       );
     }
   };
+  const displayRecommendedArtists = (arts) => {
+    const arr = [...Array(10 + 1).keys()].slice(1);
+    // console.log(arts);
+    // console.log(recommendedArtistsTracks);
+    if (arts.length !== 0 && recommendedArtistsTracks.length !== 0) {
+      return (
+        <div align="middle">
+          {arts.map((a, ind) => {
+            return (
+              <div key={a.id} className="artist-with-embed">
+                <img
+                  src={a?.images ? a?.images[0]?.url : null}
+                  width="100px"
+                  height="100px"
+                  alt="artist"
+                />
+                <h3 className="artist-name">{a?.name}</h3>
+                <div className="blank-embed-cell">
+                  <iframe
+                    title={"test"}
+                    src={
+                      "https://open.spotify.com/embed/track/" +
+                      recommendedArtistsTracks[ind]?.id +
+                      "?utm_source=generator"
+                    }
+                    height="80px"
+                    allow="encrypted-media"
+                    style={{
+                      border: "none",
+                      borderRadius: "12px",
+                      marginLeft: "10px",
+                    }}
+                  ></iframe>
+                </div>
+                {/* <p className="artist-track-name">{tracks[ind]?.name}</p> */}
+              </div>
+            );
+          })}
+        </div>
+      );
+    } else {
+      return (
+        <div align="middle">
+          {arr.map((i) => {
+            return (
+              <div key={i} className="artist-with-embed">
+                <div className="blank-artist-picture"></div>
+                <div className="blank-artist-name-cell">
+                  <div className="blank-artist-name"></div>
+                </div>
+                <div className="blank-embed-cell">
+                  <div className="blank-embed"></div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+  };
   const displayTracks = (tracks) => {
     const arr = [...Array(100 + 1).keys()].slice(1);
     if (tracks.length !== 0) {
       return (
-        <div>
+        <div align="middle">
           {tracks.map((track) => {
             return (
               <div key={track.id} className="song">
@@ -221,7 +320,7 @@ function NextFavArtist() {
       );
     } else {
       return (
-        <div>
+        <div align="middle">
           {arr.map((i) => {
             return (
               <div key={i}>
@@ -273,7 +372,7 @@ function NextFavArtist() {
 
         <div className="artist-container">
           <h2>Recommended Artists</h2>
-          {displayArtists(recommendedArtists)}
+          {displayRecommendedArtists(recommendedArtists)}
         </div>
       </div>
     );
@@ -298,8 +397,8 @@ function NextFavArtist() {
       case "recommended-artists":
         return (
           <div className="artist-container">
-            <h2>Recommended Artists</h2>
-            {displayArtists(recommendedArtists)}
+            <h2 style={{ verticalAlign: "middle" }}>Recommended Artists</h2>
+            {displayRecommendedArtists(recommendedArtists)}
           </div>
         );
       default:
