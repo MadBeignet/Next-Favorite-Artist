@@ -62,7 +62,7 @@ function NextFavArtist() {
       setUser(data);
     };
     const getTopArtists = async () => {
-      if (!makeUserAPICalls) return;
+      if (!makeUserAPICalls || !token) return;
       const { data } = await axios
         .get(BASE_ROUTE + "/me/top/artists", {
           headers: {
@@ -113,7 +113,7 @@ function NextFavArtist() {
   };
 
   useEffect(() => {
-    if (!topArtists) return;
+    if (!topArtists || !token) return;
     const getRelated = (artist) => {
       if (!makeArtistAPICalls) return;
       return axios
