@@ -3,14 +3,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import spotify_logo from "./Spotify_Logo_CMYK_White.png";
 
-console.log(process.env.CLIENT_ID);
-
 const NUM_TOP_ARTISTS = 10;
 const NUM_TOP_ARTISTS_USED = 40;
 const NUM_TOP_TRACKS = 100;
 const NUM_REC_ARTISTS = 20;
 
-const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const REDIRECT_URI = "https://www.nextfavartist.dev";
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
