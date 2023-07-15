@@ -79,6 +79,12 @@
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 .artist-container::-webkit-scrollbar {
   display: none;
@@ -105,6 +111,12 @@
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 .song-container::-webkit-scrollbar {
   display: none;
@@ -276,6 +288,7 @@
   }
   .artist-container {
     justify-content: center;
+    height: calc(100vh - 250px);
   }
   .header-spotify {
     height: min(75px, 20vw);
@@ -294,6 +307,7 @@
   }
   .song-container {
     justify-content: center;
+    height: calc(100vh - 250px);
   }
 }
 /* @media (min-width: 450px) {

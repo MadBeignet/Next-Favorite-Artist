@@ -108,6 +108,7 @@ function NextFavArtist() {
     setTopArtistList([]);
     setTopRelatedArtistsList([]);
     setRecommendedArtists([]);
+    setRecommendedArtistsTracks([]);
 
     window.localStorage.removeItem("token");
   };
