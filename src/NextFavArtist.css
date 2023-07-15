@@ -60,6 +60,11 @@
   height: min(calc(100vh - 150px), 325px);
   overflow-y: scroll;
   justify-content: center;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.profile-container::-webkit-scrollbar {
+  display: none;
 }
 .profile-picture {
   width: 100px;
@@ -72,6 +77,11 @@
   vertical-align: middle;
   height: calc(100vh - 150px);
   overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.artist-container::-webkit-scrollbar {
+  display: none;
 }
 .artist {
   /* margin-bottom: 5px; */
@@ -80,7 +90,7 @@
   vertical-align: middle;
 }
 .artist-name {
-  width: 100px;
+  width: 90px;
   height: 100px;
   display: table-cell;
   position: relative;
@@ -93,6 +103,11 @@
   display: grid;
   height: calc(100vh - 150px);
   overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.song-container::-webkit-scrollbar {
+  display: none;
 }
 .song {
   display: table;
@@ -288,3 +303,10 @@
     }
   }
 } */
+.example::-webkit-scrollbar {
+  display: none;
+}
+.example {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
