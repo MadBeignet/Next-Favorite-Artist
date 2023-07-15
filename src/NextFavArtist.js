@@ -9,7 +9,7 @@ const NUM_TOP_TRACKS = 100;
 const NUM_REC_ARTISTS = 20;
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-const REDIRECT_URI = "https://www.nextfavartist.dev";
+const REDIRECT_URI = process.env.REACT_APP_BASE_URL;
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 const SCOPES = "user-top-read user-read-private";
