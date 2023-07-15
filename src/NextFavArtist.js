@@ -14,8 +14,10 @@ const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 const SCOPES = "user-top-read user-read-private";
 const BASE_ROUTE = "https://api.spotify.com/v1";
-const makeArtistAPICalls = true;
+const makeArtistAPICalls = false;
 const makeUserAPICalls = true;
+
+// response.headers.["retry-after"]
 
 function NextFavArtist() {
   const [token, setToken] = useState("");
@@ -311,7 +313,7 @@ function NextFavArtist() {
                   className="song-picture"
                   alt="album"
                 />
-                <p className="song-name" key={track.id}>
+                <p align="left" className="song-name" key={track.id}>
                   {track.name}
                 </p>
               </div>
