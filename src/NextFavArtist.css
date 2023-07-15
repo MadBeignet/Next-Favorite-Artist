@@ -310,17 +310,7 @@
     height: calc(100vh - 210px);
   }
 }
-/* @media (min-width: 450px) {
-  @media (max-width: 950px) {
-    .blank-embed-cell {
-      display: table-cell;
-    }
-  }
-} */
-.example::-webkit-scrollbar {
-  display: none;
-}
-.example {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+
+h2 {
+  text-align: center;
 }
