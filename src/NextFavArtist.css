@@ -288,7 +288,7 @@
   }
   .artist-container {
     justify-content: center;
-    height: calc(100vh - 250px);
+    height: calc(100vh - 210px);
   }
   .header-spotify {
     height: min(75px, 20vw);
@@ -307,7 +307,7 @@
   }
   .song-container {
     justify-content: center;
-    height: calc(100vh - 250px);
+    height: calc(100vh - 210px);
   }
 }
 /* @media (min-width: 450px) {
