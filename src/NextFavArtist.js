@@ -14,8 +14,6 @@ const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 const SCOPES = "user-top-read user-read-private";
 const BASE_ROUTE = "https://api.spotify.com/v1";
-const makeArtistAPICalls = false;
-const makeUserAPICalls = true;
 
 // response.headers.["retry-after"]
 
@@ -29,6 +27,8 @@ function NextFavArtist() {
   const [recommendedArtists, setRecommendedArtists] = useState([]);
   const [recommendedArtistsTracks, setRecommendedArtistsTracks] = useState([]);
   const [page, setPage] = useState("top-artists");
+  const [makeArtistAPICalls, setMakeArtistAPICalls] = useState(true);
+  const [makeUserAPICalls, setMakeUserAPICalls] = useState(true);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -60,6 +60,19 @@ function NextFavArtist() {
           if (err.response.status === 401) {
             logout();
           }
+          if (
+            err.response.status === 429 &&
+            err.response.headers["retry-after"]
+          ) {
+            console.log(
+              "retrying after " + err.response.headers["retry-after"]
+            );
+            setMakeUserAPICalls(false);
+            setTimeout(() => {
+              setMakeUserAPICalls(true);
+              getUser();
+            }, err.response.headers["retry-after"] * 1000);
+          }
         });
       setUser(data);
     };
@@ -79,21 +92,53 @@ function NextFavArtist() {
           if (err.response.status === 401) {
             logout();
           }
+          if (
+            err.response.status === 429 &&
+            err.response.headers["retry-after"]
+          ) {
+            console.log(
+              "retrying after " + err.response.headers["retry-after"]
+            );
+            setMakeUserAPICalls(false);
+            setTimeout(() => {
+              setMakeUserAPICalls(true);
+              getTopArtists();
+            }, err.response.headers["retry-after"] * 1000);
+          }
         });
       setTopArtists(data.items.slice(0, NUM_TOP_ARTISTS));
       setTopArtistList(data.items.map((artist) => artist.id));
     };
     const getTopTracks = async () => {
       if (!makeUserAPICalls) return;
-      const { data } = await axios.get(BASE_ROUTE + "/me/top/tracks", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          limit: NUM_TOP_TRACKS,
-          time_range: "short_term",
-        },
-      });
+      const { data } = await axios
+        .get(BASE_ROUTE + "/me/top/tracks", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            limit: NUM_TOP_TRACKS,
+            time_range: "short_term",
+          },
+        })
+        .catch((err) => {
+          if (err.response.status === 401) {
+            logout();
+          }
+          if (
+            err.response.status === 429 &&
+            err.response.headers["retry-after"]
+          ) {
+            console.log(
+              "retrying after " + err.response.headers["retry-after"]
+            );
+            setMakeUserAPICalls(false);
+            setTimeout(() => {
+              setMakeUserAPICalls(true);
+              getTopTracks();
+            }, err.response.headers["retry-after"] * 1000);
+          }
+        });
       setTopTracks(data.items);
     };
     getUser();
@@ -161,7 +206,24 @@ function NextFavArtist() {
             data: response.data.tracks[0],
           };
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status === 401) {
+            logout();
+          }
+          if (
+            err.response.status === 429 &&
+            err.response.headers["retry-after"]
+          ) {
+            console.log(
+              "retrying after " + err.response.headers["retry-after"]
+            );
+            setMakeArtistAPICalls(false);
+            setTimeout(() => {
+              setMakeArtistAPICalls(true);
+              getTopTrack(artist);
+            }, err.response.headers["retry-after"] * 1000);
+          }
+        });
     };
     const resolvePromises = (allArtists) => {
       return Promise.all(recommendedArtists.map((a) => getTopTrack(a)));
@@ -171,7 +233,19 @@ function NextFavArtist() {
         .then((resp) => {
           setRecommendedArtistsTracks(resp.map((d) => d.data));
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          if (e.response.status === 401) {
+            logout();
+          }
+          if (e.response.status === 429 && e.response.headers["retry-after"]) {
+            console.log("retrying after " + e.response.headers["retry-after"]);
+            setMakeArtistAPICalls(false);
+            setTimeout(() => {
+              setMakeArtistAPICalls(true);
+              getTopTracks(artists);
+            }, e.response.headers["retry-after"] * 1000);
+          }
+        });
     };
     getTopTracks(recommendedArtists);
   }, [recommendedArtists, token, user?.country]);
