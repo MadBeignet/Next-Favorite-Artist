@@ -1,0 +1,153 @@
+:root {
+  --main-background: rgb(67, 80, 112);
+  --header-background-spotify: rgb(24, 24, 28);
+  --spotify-background: #1c1f24;
+}
+
+.App {
+  text-align: center;
+}
+.header-spotify {
+  width: 100%;
+  height: 75px;
+  background-color: var(--header-background-spotify);
+  display: table;
+  color: white;
+}
+.header-text-spotify {
+  display: table-cell;
+  vertical-align: middle;
+  margin: 0;
+  font-size: 28px;
+}
+
+.login-logout {
+  position: absolute;
+  top: 22px;
+  left: 30px;
+  margin: 0;
+  margin-right: 50px;
+  background-color: rgb(48, 48, 78);
+  border: none;
+  color: rgb(255, 207, 207);
+  width: 75px;
+  height: 35px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 13px;
+  padding-top: 2px;
+}
+.login-logout:hover {
+  cursor: pointer;
+}
+
+.container {
+  margin-top: 25px;
+  margin-bottom: 50px;
+  display: grid;
+  margin-left: 1vw;
+  vertical-align: middle;
+  grid-template-columns: min(200px, 20vw) min(250px, 25vw) min(300px, 24vw) 1fr;
+  grid-gap: 10px;
+}
+.profile-container {
+  display: grid;
+  width: 200px;
+  background-color: var(--main-background);
+  border-radius: 12px;
+  color: white;
+  padding-bottom: 10px;
+  height: min(calc(100vh - 150px), 325px);
+  overflow-y: scroll;
+  justify-content: center;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.profile-container::-webkit-scrollbar {
+  display: none;
+}
+.profile-picture {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  left: 22px;
+}
+
+
+.profile-link {
+  text-decoration: none;
+  color: white;
+}
+.profile-link:hover {
+  text-decoration: underline;
+}
+
+.desktop-display {
+  display: block;
+}
+.mobile-display {
+  justify-content: center;
+  display: none;
+}
+
+.button-container {
+  width: 100%;
+  height: 30px;
+  display: grid;
+  grid-template-columns: 30vw 30vw 40vw;
+  background-color: var(--header-background-spotify);
+  margin-bottom: 20px;
+}
+.spotify-button {
+  background-color: var(--header-background-spotify);
+  border: 1px solid var(--header-background-spotify);
+  color: white;
+  height: 40px;
+}
+
+.spotify-button-active {
+  height: 40px;
+  background-color: var(--spotify-background);
+  border: 1px solid var(--spotify-background);
+  color: white;
+  border-radius: 10px;
+}
+
+.spotify-logo {
+  position: absolute;
+  height: min(40px, 7vw);
+  top: 20px;
+  right: 20px;
+}
+
+@media (max-width: 950px) {
+  .desktop-display {
+    display: none;
+  }
+  .mobile-display {
+    display: block;
+  }
+  .header-text-spotify {
+    font-size: min(18px, 4vw);
+  }
+  .login-logout {
+    left: min(20px, 5vw);
+    top: min(20px, 5vw);
+    width: min(60px, 20vw);
+    height: min(35px, 10vw);
+  }
+  .spotify-logo {
+    top: min(24px, 8vw);
+  }
+  
+  .header-spotify {
+    height: min(75px, 20vw);
+  }
+
+  
+  
+}
+
+h2 {
+  text-align: center;
+}

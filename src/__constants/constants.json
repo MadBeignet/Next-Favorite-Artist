@@ -1,0 +1,7 @@
+{
+    "BASE_ROUTE": "https://api.spotify.com/v1",
+    "NUM_TOP_TRACKS": 100,
+    "NUM_REC_ARTISTS": 20,
+    "NUM_TOP_ARTISTS_USED": 40,
+    "NUM_TOP_ARTISTS": 10
+}
