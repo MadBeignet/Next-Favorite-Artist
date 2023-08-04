@@ -8,6 +8,10 @@ import { displayTracks } from "../Track/Track";
 import { displayUser } from "../Profile/Profile";
 
 import { getTopTracks } from "../Controllers/topTracksController";
+import { getTopArtists } from "../Controllers/topArtistsController";
+import { getUser } from "../Controllers/userController";
+import { getRelatedArtists } from "../Controllers/relatedArtistsController";
+import { getTopRelatedTracks } from "../Controllers/relatedArtistTrackController";
 
 const NUM_TOP_ARTISTS = 10;
 const NUM_TOP_ARTISTS_USED = 40;
@@ -36,6 +40,20 @@ function NextFavArtist() {
   const [makeArtistAPICalls, setMakeArtistAPICalls] = useState(true);
   const [makeUserAPICalls, setMakeUserAPICalls] = useState(true);
 
+  const logout = () => {
+    // console.log("logging out");
+    setToken("");
+    setUser({});
+    setTopArtists([]);
+    setTopTracks([]);
+    setTopArtistList([]);
+    setTopRelatedArtistsList([]);
+    setRecommendedArtists([]);
+    setRecommendedArtistsTracks([]);
+
+    window.localStorage.removeItem("token");
+  };
+
   useEffect(() => {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
@@ -54,176 +72,52 @@ function NextFavArtist() {
 
   useEffect(() => {
     if (!token) return;
-    const getUser = async () => {
-      if (!makeUserAPICalls) return;
-      const { data } = await axios
-        .get(BASE_ROUTE + "/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .catch((err) => {
-          if (err.response.status === 401) {
-            logout();
-          }
-          if (
-            err.response.status === 429 &&
-            err.response.headers["retry-after"]
-          ) {
-            console.log(
-              "retrying after " + err.response.headers["retry-after"]
-            );
-            setMakeUserAPICalls(false);
-            setTimeout(() => {
-              setMakeUserAPICalls(true);
-              getUser();
-            }, err.response.headers["retry-after"] * 1000);
-          }
-        });
-      setUser(data);
+    const getData = async () => {
+      if (!makeUserAPICalls || !makeArtistAPICalls) return;
+      const user = await getUser(token);
+      const tracks = await getTopTracks(token);
+      const artists = await getTopArtists(token);
+      // console.log(tracks);
+      if (tracks?.status === "success") {
+        setTopTracks(tracks.data);
+      }
+      if (artists?.status === "success") {
+        setTopArtists(artists.data.slice(0, NUM_TOP_ARTISTS));
+        setTopArtistList(artists.data.map((artist) => artist.id));
+      }
+      if (user?.status === "success") {
+        setUser(user.data);
+      }
     };
-    const getTopArtists = async () => {
-      if (!makeUserAPICalls || !token) return;
-      const { data } = await axios
-        .get(BASE_ROUTE + "/me/top/artists", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            limit: NUM_TOP_ARTISTS_USED,
-            time_range: "medium_term",
-          },
-        })
-        .catch((err) => {
-          if (err.response.status === 401) {
-            logout();
-          }
-          if (
-            err.response.status === 429 &&
-            err.response.headers["retry-after"]
-          ) {
-            console.log(
-              "retrying after " + err.response.headers["retry-after"]
-            );
-            setMakeUserAPICalls(false);
-            setTimeout(() => {
-              setMakeUserAPICalls(true);
-              getTopArtists();
-            }, err.response.headers["retry-after"] * 1000);
-          }
-        });
-      setTopArtists(data.items.slice(0, NUM_TOP_ARTISTS));
-      setTopArtistList(data.items.map((artist) => artist.id));
-    };
-    if (makeUserAPICalls) return;
-    getUser();
-    getTopArtists();
-    getTopTracks(logout);
-  }, [token]);
-
-  const logout = () => {
-    // console.log("logging out");
-    setToken("");
-    setUser({});
-    setTopArtists([]);
-    setTopTracks([]);
-    setTopArtistList([]);
-    setTopRelatedArtistsList([]);
-    setRecommendedArtists([]);
-    setRecommendedArtistsTracks([]);
-
-    window.localStorage.removeItem("token");
-  };
+    getData();
+  }, [token, makeUserAPICalls, makeArtistAPICalls]);
 
   useEffect(() => {
     if (!topArtists || !token) return;
-    const getRelated = (artist) => {
-      if (!makeArtistAPICalls) return;
-      return axios
-        .get(BASE_ROUTE + "/artists/" + artist + "/related-artists", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          return {
-            data: response.data,
-          };
-        })
-        .catch((err) => console.log(err));
+    const getData = async () => {
+      const relatedArtists = await getRelatedArtists(
+        topArtists.map((a) => a.id),
+        token
+      );
+      // console.log(relatedArtists);
+      if (relatedArtists?.status === "success") {
+        setTopRelatedArtistsList(relatedArtists.data);
+      }
     };
-    const resolvePromises = (allArtists) => {
-      return Promise.all(allArtists.map((a) => getRelated(a)));
-    };
-    const getRelatedArtists = async (artists) => {
-      resolvePromises(artists)
-        .then((resp) => {
-          setTopRelatedArtistsList(resp.map((d) => d.data.artists).flat());
-        })
-        .catch((e) => console.log(e));
-    };
-    getRelatedArtists(topArtists.map((a) => a.id));
+    getData();
+    // getRelatedArtists(topArtists.map((a) => a.id));
   }, [topArtists, token]);
   useEffect(() => {
     if (!recommendedArtists || !token || !user?.country) return;
-    const getTopTrack = async (artist) => {
-      return axios
-        .get(BASE_ROUTE + "/artists/" + artist.id + "/top-tracks", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            country: user.country,
-          },
-        })
-        .then((response) => {
-          return {
-            data: response.data.tracks[0],
-          };
-        })
-        .catch((err) => {
-          if (err.response.status === 401) {
-            logout();
-          }
-          if (
-            err.response.status === 429 &&
-            err.response.headers["retry-after"]
-          ) {
-            console.log(
-              "retrying after " + err.response.headers["retry-after"]
-            );
-            setMakeArtistAPICalls(false);
-            setTimeout(() => {
-              setMakeArtistAPICalls(true);
-              getTopTrack(artist);
-            }, err.response.headers["retry-after"] * 1000);
-          }
-        });
+    const getData = async () => {
+      const tracks = await getTopRelatedTracks(recommendedArtists, token, user);
+      if (tracks?.status === "success") {
+        setRecommendedArtistsTracks(tracks.data);
+      }
     };
-    const resolvePromises = (allArtists) => {
-      return Promise.all(recommendedArtists.map((a) => getTopTrack(a)));
-    };
-    const getTopTracks = async (artists) => {
-      resolvePromises(artists)
-        .then((resp) => {
-          setRecommendedArtistsTracks(resp.map((d) => d.data));
-        })
-        .catch((e) => {
-          if (e.response.status === 401) {
-            logout();
-          }
-          if (e.response.status === 429 && e.response.headers["retry-after"]) {
-            console.log("retrying after " + e.response.headers["retry-after"]);
-            setMakeArtistAPICalls(false);
-            setTimeout(() => {
-              setMakeArtistAPICalls(true);
-              getTopTracks(artists);
-            }, e.response.headers["retry-after"] * 1000);
-          }
-        });
-    };
-    getTopTracks(recommendedArtists);
-  }, [recommendedArtists, token, user?.country]);
+    getData();
+    // getTopTracks(recommendedArtists);
+  }, [recommendedArtists, token, user]);
 
   useEffect(() => {
     if (!topRelatedArtistsList) return;
