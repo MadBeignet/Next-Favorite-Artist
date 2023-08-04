@@ -6,7 +6,7 @@ Stuck on the same few artists and want a few new suggestions? This app will help
 
 By using your top 10 artists, spotify's API, and a little bit of math, this app will find artists that are similar to your current favorites. Each top artist will lead to 20 related artists, which are then weighted by the ranking of the related top artist and then squashed all into a summation along with a sort from greatest to least. After these artists are squashed and sorted, the top 40 artists are filtered out, ultimately leaving you with your [`next favorite artist`](https://www.nextfavartist.dev).
 
-## To Do:
+## To do:
 
 - [ ] Center login button on entire page
 - [ ] Center logout text in logout button
@@ -18,6 +18,8 @@ By using your top 10 artists, spotify's API, and a little bit of math, this app 
 ## Eventual To Dos:
 
 - [ ] Format the files better
+- [ ] Add arrow icon at bottom of list to indicate scrolling down
+- [ ] Add more space between the track embed and recommended artist name
 
 ## Goals
 
