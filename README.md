@@ -13,6 +13,11 @@ By using your top 10 artists, spotify's API, and a little bit of math, this app 
 - [ ] Filter out artists in top tracks from Recommended Artists
 - [ ] Dynamic font size for artists with long names without spaces
 - [ ] Add a space beneath last item in tracks/artists to prevent the fade from covering the last item
+- [ ] Add more space between the track embed and recommended artist name
+
+## Eventual To Dos:
+
+- [ ] Format the files better
 - [ ] Add arrow icon at bottom of list to indicate scrolling down
 - [ ] Add more space between the track embed and recommended artist name
 
