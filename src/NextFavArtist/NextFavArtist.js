@@ -1,6 +1,5 @@
 import "./NextFavArtist.css";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { spotify_logo } from "../__images";
 
 import { displayArtists, displayRecommendedArtists } from "../Artist/Artist";
@@ -14,8 +13,6 @@ import { getRelatedArtists } from "../Controllers/relatedArtistsController";
 import { getTopRelatedTracks } from "../Controllers/relatedArtistTrackController";
 
 const NUM_TOP_ARTISTS = 10;
-const NUM_TOP_ARTISTS_USED = 40;
-const NUM_TOP_TRACKS = 100;
 const NUM_REC_ARTISTS = 20;
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
@@ -23,7 +20,6 @@ const REDIRECT_URI = process.env.REACT_APP_BASE_URL;
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 const SCOPES = "user-top-read user-read-private";
-const BASE_ROUTE = "https://api.spotify.com/v1";
 
 // response.headers.["retry-after"]
 
@@ -37,8 +33,8 @@ function NextFavArtist() {
   const [recommendedArtists, setRecommendedArtists] = useState([]);
   const [recommendedArtistsTracks, setRecommendedArtistsTracks] = useState([]);
   const [page, setPage] = useState("top-artists");
-  const [makeArtistAPICalls, setMakeArtistAPICalls] = useState(true);
-  const [makeUserAPICalls, setMakeUserAPICalls] = useState(true);
+  const makeArtistAPICalls = true;
+  const makeUserAPICalls = true;
 
   const logout = () => {
     // console.log("logging out");
