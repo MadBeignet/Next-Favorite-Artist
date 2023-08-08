@@ -22,13 +22,15 @@
   vertical-align: middle;
 }
 .artist-name {
-  width: 90px;
+  width: 95px;
   height: 100px;
   display: table-cell;
   position: relative;
   vertical-align: middle;
   text-align: start;
   left: 10px;
+  /* font-size-adjust: 0.5; */
+  font-size: 100%;
 }
 
 .blank-artist-picture {
@@ -98,4 +100,9 @@
   .blank-artist-name-cell {
     vertical-align: middle;
   }
+}
+.filler-artist {
+  height: 50px;
+  display: table-cell;
+  background-color: white;
 }

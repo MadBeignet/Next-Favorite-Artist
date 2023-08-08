@@ -8,18 +8,18 @@ By using your top 10 artists, spotify's API, and a little bit of math, this app 
 
 ## To do:
 
-- [ ] Center login button on entire page
-- [ ] Center logout text in logout button
-- [ ] Filter out artists in top tracks from Recommended Artists
+- [x] Center login button on entire page
+- [x] Center logout text in logout button
+- [x] Filter out artists in top tracks from Recommended Artists
 - [ ] Dynamic font size for artists with long names without spaces
-- [ ] Add a space beneath last item in tracks/artists to prevent the fade from covering the last item
-- [ ] Add more space between the track embed and recommended artist name
+- [x] Add a space beneath last item in tracks/artists to prevent the fade from covering the last item
+- [x] Add more space between the track embed and recommended artist name
 
 ## Eventual To Dos:
 
-- [ ] Format the files better
+- [x] Format the files better
 - [ ] Add arrow icon at bottom of list to indicate scrolling down
-- [ ] Add more space between the track embed and recommended artist name
+- [x] Add more space between the track embed and recommended artist name
 
 ## Goals
 
@@ -27,3 +27,8 @@ By using your top 10 artists, spotify's API, and a little bit of math, this app 
 - Create a playlist using Spotify's recommendations API using the recommended artists and top 5-10 genres in top tracks.
 - ... a few other things that I'll think about later
 - Eventually submit for an extended quota
+
+## Playlist Creation
+
+- [ ] Get top genres in top tracks, top artists
+- [ ] Pick which songs to recommend depending on the top genres

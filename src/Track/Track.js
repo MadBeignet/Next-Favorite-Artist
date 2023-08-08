@@ -19,6 +19,7 @@ export const displayTracks = (tracks) => {
             </div>
           );
         })}
+        <div className="filler-track"></div>
       </div>
     );
   } else {
@@ -34,6 +35,7 @@ export const displayTracks = (tracks) => {
             </div>
           );
         })}
+        <div className="filler-track"></div>
       </div>
     );
   }
