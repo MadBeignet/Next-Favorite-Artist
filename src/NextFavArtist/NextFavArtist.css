@@ -1,6 +1,7 @@
 :root {
   --main-background: rgb(67, 80, 112);
   --header-background-spotify: rgb(24, 24, 28);
+  --login-background: rgb(48, 48, 78);
   --spotify-background: #1c1f24;
 }
 
@@ -34,10 +35,29 @@
   height: 35px;
   border-radius: 5px;
   text-decoration: none;
+  font-weight: bold;
   font-size: 13px;
   padding-top: 2px;
 }
 .login-logout:hover {
+  cursor: pointer;
+}
+
+.login-button {
+  position: absolute;
+  top: calc(50vh - 92.5px);
+  left: calc(50vw - 37.5px);
+  background-color: var(--main-background);
+  border: none;
+  color: rgb(255, 207, 207);
+  width: 120px;
+  height: 50px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 18px;
+  padding-top: 2px;
+}
+.login-button:hover {
   cursor: pointer;
 }
 
@@ -72,7 +92,6 @@
   position: relative;
   left: 22px;
 }
-
 
 .profile-link {
   text-decoration: none;
@@ -139,13 +158,10 @@
   .spotify-logo {
     top: min(24px, 8vw);
   }
-  
+
   .header-spotify {
     height: min(75px, 20vw);
   }
-
-  
-  
 }
 
 h2 {

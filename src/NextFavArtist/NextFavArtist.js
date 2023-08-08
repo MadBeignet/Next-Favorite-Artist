@@ -33,8 +33,10 @@ function NextFavArtist() {
   const [recommendedArtists, setRecommendedArtists] = useState([]);
   const [recommendedArtistsTracks, setRecommendedArtistsTracks] = useState([]);
   const [page, setPage] = useState("top-artists");
-  const makeArtistAPICalls = true;
-  const makeUserAPICalls = true;
+  const [makeArtistAPICalls, setMakeArtistAPICalls] = useState(true);
+  const [makeUserAPICalls, setMakeUserAPICalls] = useState(true);
+  // const makeArtistAPICalls = true;
+  // const makeUserAPICalls = true;
 
   const logout = () => {
     // console.log("logging out");
@@ -48,6 +50,23 @@ function NextFavArtist() {
     setRecommendedArtistsTracks([]);
 
     window.localStorage.removeItem("token");
+  };
+
+  const errorHandler = (err) => {
+    console.log(err);
+    if (err.response.status === 401) {
+      logout();
+    }
+    if (err.response.status === 429 && err.response.headers["retry-after"]) {
+      console.log("retrying after " + err.response.headers["retry-after"]);
+      setMakeUserAPICalls(false);
+      setMakeArtistAPICalls(false);
+      setTimeout(() => {
+        setMakeUserAPICalls(true);
+        setMakeArtistAPICalls(true);
+        // getTopArtists();
+      }, err.response.headers["retry-after"] * 1000);
+    }
   };
 
   useEffect(() => {
@@ -73,16 +92,22 @@ function NextFavArtist() {
       const user = await getUser(token);
       const tracks = await getTopTracks(token);
       const artists = await getTopArtists(token);
-      // console.log(tracks);
+
       if (tracks?.status === "success") {
         setTopTracks(tracks.data);
+      } else {
+        errorHandler(tracks.error);
       }
       if (artists?.status === "success") {
-        setTopArtists(artists.data.slice(0, NUM_TOP_ARTISTS));
-        setTopArtistList(artists.data.map((artist) => artist.id));
+        setTopArtists(artists.data.items.slice(0, NUM_TOP_ARTISTS));
+        setTopArtistList(artists.data.items.map((artist) => artist.id));
+      } else {
+        errorHandler(artists.error);
       }
       if (user?.status === "success") {
         setUser(user.data);
+      } else {
+        errorHandler(user.error);
       }
     };
     getData();
@@ -131,7 +156,11 @@ function NextFavArtist() {
     setRecommendedArtists(
       Object.keys(counts)
         .sort((a, b) => counts[b] - counts[a])
-        .filter((a) => !topArtistList.includes(a))
+        .filter(
+          (a) =>
+            !topArtistList.includes(a) &&
+            !topTracks.map((t) => t.artists[0].id).includes(a)
+        )
         .map((art) => idToArtist(art))
         .slice(
           0,
@@ -207,13 +236,13 @@ function NextFavArtist() {
             <h1 className="header-text-spotify">Next Favorite Artist</h1>
             {!token ? (
               <a
-                className="login-logout"
+                className="login-button"
                 href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPES}`}
               >
                 Login to Spotify
               </a>
             ) : (
-              <button className="login-logout" onClick={logout}>
+              <button align="middle" className="login-logout" onClick={logout}>
                 Logout
               </button>
             )}
@@ -229,7 +258,7 @@ function NextFavArtist() {
             <h1 className="header-text-spotify">Next Favorite Artist</h1>
             {!token ? (
               <a
-                className="login-logout"
+                className="login-button"
                 href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPES}`}
               >
                 Login to Spotify

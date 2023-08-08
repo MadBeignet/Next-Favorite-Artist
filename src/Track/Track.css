@@ -76,3 +76,8 @@
 h2 {
   text-align: center;
 }
+
+.filler-track {
+  height: 50px;
+  display: table-cell;
+}

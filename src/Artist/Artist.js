@@ -18,6 +18,7 @@ export const displayArtists = (arts) => {
             </div>
           );
         })}
+        <div className="filler-artist"></div>
       </div>
     );
   } else {
@@ -33,6 +34,7 @@ export const displayArtists = (arts) => {
             </div>
           );
         })}
+        <div className="filler-artist"></div>
       </div>
     );
   }
@@ -67,7 +69,7 @@ export const displayRecommendedArtists = (arts, tracks) => {
                   style={{
                     border: "none",
                     borderRadius: "12px",
-                    marginLeft: "10px",
+                    marginLeft: "20px",
                   }}
                 ></iframe>
               </div>
@@ -75,6 +77,7 @@ export const displayRecommendedArtists = (arts, tracks) => {
             </div>
           );
         })}
+        <div className="filler-artist"></div>
       </div>
     );
   } else {
@@ -93,6 +96,7 @@ export const displayRecommendedArtists = (arts, tracks) => {
             </div>
           );
         })}
+        <div className="filler-artist"></div>
       </div>
     );
   }
