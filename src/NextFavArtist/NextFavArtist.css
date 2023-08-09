@@ -38,6 +38,7 @@
   font-weight: bold;
   font-size: 13px;
   padding-top: 2px;
+  text-align: center;
 }
 .login-logout:hover {
   cursor: pointer;
@@ -152,7 +153,7 @@
   .login-logout {
     left: min(20px, 5vw);
     top: min(20px, 5vw);
-    width: min(60px, 20vw);
+    width: min(60px, 24vw);
     height: min(35px, 10vw);
   }
   .spotify-logo {
