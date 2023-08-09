@@ -45,8 +45,8 @@
 
 .login-button {
   position: absolute;
-  top: calc(50vh - 92.5px);
-  left: calc(50vw - 37.5px);
+  top: calc(50vh - 100px);
+  left: calc(50vw - 60px);
   background-color: var(--main-background);
   border: none;
   color: rgb(255, 207, 207);
