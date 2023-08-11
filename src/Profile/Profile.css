@@ -10,6 +10,7 @@
   justify-content: center;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  margin-top: 27px;
 }
 .profile-container::-webkit-scrollbar {
   display: none;

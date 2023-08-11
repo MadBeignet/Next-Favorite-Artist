@@ -33,7 +33,7 @@ export const DisplayUser = (user, token, makeUserAPICalls, data) => {
             Create Curated Playlist
           </button>
           <div className="playlist-name-tooltip">
-            Create a playlist based on top artists and tracks
+            Creates a playlist based on top artists and tracks
           </div>
         </div>
       </div>
