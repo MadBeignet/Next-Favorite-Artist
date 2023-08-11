@@ -28,7 +28,7 @@
   left: 30px;
   margin: 0;
   margin-right: 50px;
-  background-color: rgb(48, 48, 78);
+  background-color: var(--main-background);
   border: none;
   color: rgb(255, 207, 207);
   width: 75px;
@@ -70,36 +70,6 @@
   vertical-align: middle;
   grid-template-columns: min(200px, 20vw) min(250px, 25vw) min(300px, 24vw) 1fr;
   grid-gap: 10px;
-}
-.profile-container {
-  display: grid;
-  width: 200px;
-  background-color: var(--main-background);
-  border-radius: 12px;
-  color: white;
-  padding-bottom: 10px;
-  height: min(calc(100vh - 150px), 325px);
-  overflow-y: scroll;
-  justify-content: center;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-.profile-container::-webkit-scrollbar {
-  display: none;
-}
-.profile-picture {
-  width: 100px;
-  height: 100px;
-  position: relative;
-  left: 22px;
-}
-
-.profile-link {
-  text-decoration: none;
-  color: white;
-}
-.profile-link:hover {
-  text-decoration: underline;
 }
 
 .desktop-display {

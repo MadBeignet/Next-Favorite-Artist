@@ -4,7 +4,7 @@ import { spotify_logo } from "../__images";
 
 import { displayArtists, displayRecommendedArtists } from "../Artist/Artist";
 import { displayTracks } from "../Track/Track";
-import { displayUser } from "../Profile/Profile";
+import { DisplayUser } from "../Profile/Profile";
 
 import { getTopTracks } from "../Controllers/topTracksController";
 import { getTopArtists } from "../Controllers/topArtistsController";
@@ -19,7 +19,8 @@ const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const REDIRECT_URI = process.env.REACT_APP_BASE_URL;
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
-const SCOPES = "user-top-read user-read-private";
+const SCOPES =
+  "user-top-read user-read-private playlist-modify-private playlist-modify-public";
 
 // response.headers.["retry-after"]
 
@@ -35,6 +36,7 @@ function NextFavArtist() {
   const [page, setPage] = useState("top-artists");
   const [makeArtistAPICalls, setMakeArtistAPICalls] = useState(true);
   const [makeUserAPICalls, setMakeUserAPICalls] = useState(true);
+
   // const makeArtistAPICalls = true;
   // const makeUserAPICalls = true;
 
@@ -53,7 +55,7 @@ function NextFavArtist() {
   };
 
   const errorHandler = (err) => {
-    console.log(err);
+    // console.log(err);
     if (err.response.status === 401) {
       logout();
     }
@@ -172,27 +174,33 @@ function NextFavArtist() {
   }, [topRelatedArtistsList, topArtistList]);
 
   const display = () => {
-    if (!token || !topArtists || !topTracks) return;
+    if (!topArtists || !topTracks) return;
     return (
       <div className="container">
-        {user ? displayUser(user) : <div className="profile-container"></div>}
-        <div className="artist-container">
-          <h2>Top Artists</h2>
-          {displayArtists(topArtists)}
-        </div>
+        {DisplayUser(user, token, makeUserAPICalls, {topArtists: topArtists, topTracks: topTracks, recTracks: recommendedArtistsTracks, recArtists: recommendedArtists})}
+        {token && (
+          <div className="artist-container">
+            <h2>Top Artists</h2>
+            {displayArtists(topArtists)}
+          </div>
+        )}
 
-        <div className="song-container">
-          <h2>Recent Top Tracks</h2>
-          {displayTracks(topTracks)}
-        </div>
+        {token && (
+          <div className="song-container">
+            <h2>Recent Top Tracks</h2>
+            {displayTracks(topTracks)}
+          </div>
+        )}
 
-        <div className="artist-container">
-          <h2>Recommended Artists</h2>
-          {displayRecommendedArtists(
-            recommendedArtists,
-            recommendedArtistsTracks
-          )}
-        </div>
+        {token && (
+          <div className="artist-container">
+            <h2>Recommended Artists</h2>
+            {displayRecommendedArtists(
+              recommendedArtists,
+              recommendedArtistsTracks
+            )}
+          </div>
+        )}
       </div>
     );
   };
