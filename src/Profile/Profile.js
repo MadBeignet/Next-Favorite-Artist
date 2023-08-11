@@ -1,13 +1,36 @@
 import "./Profile.css";
-import react from "react";
 import { useState } from "react";
 import RecommendedPlaylist from "../RecommendedPlaylist/RecommendedPlaylist";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
 
 export const DisplayUser = (user, token, makeUserAPICalls, data) => {
   const [playlistName, setPlaylistName] = useState("");
-  const submitName = () => {
-    RecommendedPlaylist(playlistName, user, token, makeUserAPICalls, data);
+  const submitName = async () => {
+    if (!playlistName) return;
+    const name = playlistName;
     setPlaylistName("");
+    const tracksAdded = await RecommendedPlaylist(
+      name,
+      user,
+      token,
+      makeUserAPICalls,
+      data
+    );
+    if (tracksAdded.status === "success") {
+      NotificationManager.success("Playlist Created!", "", 2000);
+    } else {
+      if (tracksAdded.error.response.status === 429)
+        NotificationManager.error("Error Creating Playlist", "Come back later");
+      if (tracksAdded.error.response.status === 401)
+        NotificationManager.error(
+          "Error Creating Playlist",
+          "Refresh the page and try again"
+        );
+    }
   };
 
   if (!token) return;
@@ -22,12 +45,14 @@ export const DisplayUser = (user, token, makeUserAPICalls, data) => {
         Visit Profile
       </a>
       <div>
+        <NotificationContainer />
         <input
           className="playlist-name-input"
           placeholder="New Playlist Name"
           value={playlistName}
           onChange={(e) => setPlaylistName(e.target.value)}
         />
+
         <div className="submit-button" align="middle">
           <button className="playlist-name-submit" onClick={() => submitName()}>
             Create Curated Playlist

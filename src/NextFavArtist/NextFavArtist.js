@@ -171,7 +171,7 @@ function NextFavArtist() {
             : Object.keys(counts).length
         )
     );
-  }, [topRelatedArtistsList, topArtistList]);
+  }, [topRelatedArtistsList, topArtistList, topTracks]);
 
   const display = () => {
     if (!topArtists || !topTracks) return;

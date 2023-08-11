@@ -9,8 +9,10 @@
     "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-notifications": "^1.7.4",
     "react-scripts": "5.0.1",
     "react-spotify-embed": "^2.0.3",
+    "sass-loader": "^13.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -36,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass": "^1.65.1"
   }
 }

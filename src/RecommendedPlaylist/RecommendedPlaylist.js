@@ -25,7 +25,7 @@ export default async function RecommendedPlaylist(
     makeUserAPICalls,
     user.country
   );
-  await addTracks(
+  return await addTracks(
     token,
     playlistID,
     data.recTracks.map((track) => track.uri).concat(seedTracks.data),
