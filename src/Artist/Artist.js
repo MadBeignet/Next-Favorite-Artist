@@ -1,4 +1,5 @@
 import "./Artist.css";
+import { Spotify } from "react-spotify-embed";
 
 export const displayArtists = (arts) => {
   const arr = [...Array(10 + 1).keys()].slice(1);
@@ -41,8 +42,6 @@ export const displayArtists = (arts) => {
 };
 export const displayRecommendedArtists = (arts, tracks) => {
   const arr = [...Array(10 + 1).keys()].slice(1);
-  // console.log(arts);
-  // console.log(recommendedArtistsTracks);
   if (arts.length !== 0 && tracks.length !== 0) {
     return (
       <div align="middle">
@@ -57,7 +56,16 @@ export const displayRecommendedArtists = (arts, tracks) => {
               />
               <h3 className="artist-name">{a?.name}</h3>
               <div className="blank-embed-cell">
-                <iframe
+                <Spotify
+                  style={{
+                    border: "none",
+                    borderRadius: "12px",
+                    marginLeft: "20px",
+                  }}
+                  height={80}
+                  link={tracks[ind]?.external_urls.spotify}
+                />
+                {/* <iframe
                   title={"test"}
                   src={
                     "https://open.spotify.com/embed/track/" +
@@ -71,7 +79,7 @@ export const displayRecommendedArtists = (arts, tracks) => {
                     borderRadius: "12px",
                     marginLeft: "20px",
                   }}
-                ></iframe>
+                ></iframe> */}
               </div>
               {/* <p className="artist-track-name">{tracks[ind]?.name}</p> */}
             </div>

@@ -171,13 +171,18 @@ function NextFavArtist() {
             : Object.keys(counts).length
         )
     );
-  }, [topRelatedArtistsList, topArtistList]);
+  }, [topRelatedArtistsList, topArtistList, topTracks]);
 
   const display = () => {
     if (!topArtists || !topTracks) return;
     return (
       <div className="container">
-        {DisplayUser(user, token, makeUserAPICalls, {topArtists: topArtists, topTracks: topTracks, recTracks: recommendedArtistsTracks, recArtists: recommendedArtists})}
+        {DisplayUser(user, token, makeUserAPICalls, {
+          topArtists: topArtists,
+          topTracks: topTracks,
+          recTracks: recommendedArtistsTracks,
+          recArtists: recommendedArtists,
+        })}
         {token && (
           <div className="artist-container">
             <h2>Top Artists</h2>
