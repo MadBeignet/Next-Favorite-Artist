@@ -38,7 +38,11 @@ export const DisplayUser = (user, token, makeUserAPICalls, data) => {
   return (
     <div className="profile-container">
       <h2>Profile</h2>
-      <img className="profile-picture" src={user.images[0].url} alt="profile" />
+      <img
+        className="profile-picture"
+        src={user.images[0]?.url}
+        alt="profile"
+      />
       <h2>{user.display_name}</h2>
       <h3>Followers: {user.followers.total}</h3>
       <a className="profile-link" href={user.uri}>
