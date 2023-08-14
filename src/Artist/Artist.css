@@ -1,7 +1,7 @@
 .artist-container {
   display: grid;
   vertical-align: middle;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 200px);
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -75,9 +75,6 @@
 }
 .artist-with-embed {
   display: table;
-  /* grid-template-columns: 100px 100px 250px;
-  grid-gap: 5px; */
-  /* margin-bottom: 5px; */
   vertical-align: middle;
 }
 
@@ -90,7 +87,7 @@
 @media (max-width: 950px) {
   .artist-container {
     justify-content: center;
-    height: calc(100vh - 210px);
+    height: calc(100vh - 260px);
   }
   .artist {
     width: 200px;
