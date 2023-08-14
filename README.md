@@ -16,6 +16,7 @@ By using your top 10 artists, spotify's API, and a little bit of math, this app 
 
 ## Goals
 
+- Create backend
 - Utilize caching to reduce API calls but also keep the data relevant
 - Create a playlist using Spotify's recommendations API using the recommended artists and top 5-10 genres in top tracks.
 - ... a few other things that I'll think about later
