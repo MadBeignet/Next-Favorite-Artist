@@ -123,7 +123,7 @@
   .login-logout {
     left: min(20px, 5vw);
     top: min(20px, 5vw);
-    width: min(60px, 24vw);
+    width: min(75px, 24vw);
     height: min(35px, 10vw);
   }
   .spotify-logo {

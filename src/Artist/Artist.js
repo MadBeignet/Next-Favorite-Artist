@@ -40,7 +40,7 @@ export const displayArtists = (arts) => {
     );
   }
 };
-export const displayRecommendedArtists = (arts, tracks) => {
+export const displayRecommendedArtists = (arts, tracks, embeds) => {
   const arr = [...Array(10 + 1).keys()].slice(1);
   if (arts.length !== 0 && tracks.length !== 0) {
     return (
@@ -56,7 +56,7 @@ export const displayRecommendedArtists = (arts, tracks) => {
               />
               <h3 className="artist-name">{a?.name}</h3>
               <div className="blank-embed-cell">
-                <Spotify
+                {/* <Spotify
                   style={{
                     border: "none",
                     borderRadius: "12px",
@@ -64,22 +64,25 @@ export const displayRecommendedArtists = (arts, tracks) => {
                   }}
                   height={80}
                   link={tracks[ind]?.external_urls.spotify}
-                />
-                {/* <iframe
-                  title={"test"}
-                  src={
-                    "https://open.spotify.com/embed/track/" +
-                    tracks[ind]?.id +
-                    "?utm_source=generator"
-                  }
-                  height="80px"
-                  allow="encrypted-media"
-                  style={{
-                    border: "none",
-                    borderRadius: "12px",
-                    marginLeft: "20px",
-                  }}
-                ></iframe> */}
+                /> */}
+                {embeds && (
+                  <iframe
+                    title={"test"}
+                    src={
+                      "https://open.spotify.com/embed/track/" +
+                      tracks[ind]?.id +
+                      "?utm_source=generator"
+                    }
+                    height="80px"
+                    allow="encrypted-media"
+                    style={{
+                      border: "none",
+                      borderRadius: "12px",
+                      marginLeft: "20px",
+                    }}
+                    onError={(error) => console.log(error)}
+                  ></iframe>
+                )}
               </div>
               {/* <p className="artist-track-name">{tracks[ind]?.name}</p> */}
             </div>

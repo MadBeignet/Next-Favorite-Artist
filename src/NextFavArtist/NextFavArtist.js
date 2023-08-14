@@ -22,8 +22,6 @@ const RESPONSE_TYPE = "token";
 const SCOPES =
   "user-top-read user-read-private playlist-modify-private playlist-modify-public";
 
-// response.headers.["retry-after"]
-
 function NextFavArtist() {
   const [token, setToken] = useState("");
   const [user, setUser] = useState(null);
@@ -184,26 +182,29 @@ function NextFavArtist() {
           recArtists: recommendedArtists,
         })}
         {token && (
-          <div className="artist-container">
+          <div>
             <h2>Top Artists</h2>
-            {displayArtists(topArtists)}
+            <div className="artist-container">{displayArtists(topArtists)}</div>
           </div>
         )}
 
         {token && (
-          <div className="song-container">
+          <div>
             <h2>Recent Top Tracks</h2>
-            {displayTracks(topTracks)}
+            <div className="song-container">{displayTracks(topTracks)}</div>
           </div>
         )}
 
         {token && (
-          <div className="artist-container">
+          <div>
             <h2>Recommended Artists</h2>
-            {displayRecommendedArtists(
-              recommendedArtists,
-              recommendedArtistsTracks
-            )}
+            <div className="artist-container">
+              {displayRecommendedArtists(
+                recommendedArtists,
+                recommendedArtistsTracks,
+                true
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -214,31 +215,46 @@ function NextFavArtist() {
     switch (page) {
       case "top-artists":
         return (
-          <div className="artist-container">
+          <div>
             <h2>Top Artists</h2>
-            {displayArtists(topArtists)}
+            <div className="artist-container" id="column">
+              {displayArtists(topArtists)}
+            </div>
           </div>
         );
       case "top-tracks":
         return (
-          <div className="song-container">
+          <div>
             <h2>Recent Top Tracks</h2>
-            {displayTracks(topTracks)}
+            <div className="song-container" id="column">
+              {displayTracks(topTracks)}
+            </div>
           </div>
         );
       case "recommended-artists":
         return (
-          <div className="artist-container">
+          <div>
             <h2 style={{ verticalAlign: "middle" }}>Recommended Artists</h2>
-            {displayRecommendedArtists(
-              recommendedArtists,
-              recommendedArtistsTracks
-            )}
+            <div className="artist-container" id="column">
+              {displayRecommendedArtists(
+                recommendedArtists,
+                recommendedArtistsTracks,
+                false
+              )}
+            </div>
           </div>
         );
       default:
         return null;
     }
+  };
+
+  const switchPage = (page) => {
+    setPage(page);
+    const el = document.getElementById("column");
+    el.scrollTo({
+      top: 0,
+    });
   };
 
   return (
@@ -290,7 +306,7 @@ function NextFavArtist() {
                   ? "spotify-button-active"
                   : "spotify-button"
               }
-              onClick={() => setPage("top-artists")}
+              onClick={() => switchPage("top-artists")}
             >
               Top Artists
             </button>
@@ -300,7 +316,7 @@ function NextFavArtist() {
                   ? "spotify-button-active"
                   : "spotify-button"
               }
-              onClick={() => setPage("top-tracks")}
+              onClick={() => switchPage("top-tracks")}
             >
               Top Tracks
             </button>
@@ -310,7 +326,7 @@ function NextFavArtist() {
                   ? "spotify-button-active"
                   : "spotify-button"
               }
-              onClick={() => setPage("recommended-artists")}
+              onClick={() => switchPage("recommended-artists")}
             >
               Recommended Artists
             </button>
