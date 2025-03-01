@@ -11,6 +11,8 @@ import { getTopArtists } from "../Controllers/topArtistsController";
 import { getUser } from "../Controllers/userController";
 import { getRelatedArtists } from "../Controllers/relatedArtistsController";
 import { getTopRelatedTracks } from "../Controllers/relatedArtistTrackController";
+import { getRelatedAlbumTracks } from "../Controllers/relatedArtistGetAlbumTracks";
+import { getRelatedArtistsAlbums } from "../Controllers/relatedArtistGetAlbums";
 
 const NUM_TOP_ARTISTS = 10;
 const NUM_REC_ARTISTS = 20;
@@ -34,6 +36,7 @@ function NextFavArtist() {
   const [page, setPage] = useState("top-artists");
   const [makeArtistAPICalls, setMakeArtistAPICalls] = useState(true);
   const [makeUserAPICalls, setMakeUserAPICalls] = useState(true);
+  const [recTracks, setRecTracks] = useState([]);
 
   // const makeArtistAPICalls = true;
   // const makeUserAPICalls = true;
@@ -69,6 +72,7 @@ function NextFavArtist() {
     }
   };
 
+  // get token
   useEffect(() => {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
@@ -85,6 +89,7 @@ function NextFavArtist() {
     setToken(token);
   }, []);
 
+  // sets the top tracks, top artists, and top artist list
   useEffect(() => {
     if (!token) return;
     const getData = async () => {
@@ -113,6 +118,7 @@ function NextFavArtist() {
     getData();
   }, [token, makeUserAPICalls, makeArtistAPICalls]);
 
+  // gets top related artists
   useEffect(() => {
     if (!topArtists || !token) return;
     const getData = async () => {
@@ -171,6 +177,29 @@ function NextFavArtist() {
     );
   }, [topRelatedArtistsList, topArtistList, topTracks]);
 
+  useEffect(() => {
+    if (!recommendedArtists) return;
+
+    const getData = async () => {
+      const relatedArtistAlbums = await getRelatedArtistsAlbums(recommendedArtists, token, user);
+      if (relatedArtistAlbums?.status === "success") {
+        console.log("Related Artist Albums: \n");
+        console.log(relatedArtistAlbums);
+        const relatedArtistTracks = await getRelatedAlbumTracks(relatedArtistAlbums.data, token);
+        if (relatedArtistTracks?.status === "success") {
+          setRecTracks(relatedArtistTracks.data);
+          console.log("Related Artists Tracks: \n");
+          console.log(relatedArtistTracks);
+        }
+      }
+      
+    }
+
+    getData();
+    // setRecTracks(relatedArtistTracks);
+    
+  },[recommendedArtists])
+
   const display = () => {
     if (!topArtists || !topTracks) return;
     return (
@@ -188,12 +217,18 @@ function NextFavArtist() {
           </div>
         )}
 
-        {token && (
+        {/*token && (
           <div>
             <h2>Recent Top Tracks</h2>
             <div className="song-container">{displayTracks(topTracks)}</div>
           </div>
+        )*/}
+        {token && (
+          <div>
+          <h2>Test</h2>
+          <div className="song-container">{displayTracks(recTracks)}</div></div>
         )}
+
 
         {token && (
           <div>
