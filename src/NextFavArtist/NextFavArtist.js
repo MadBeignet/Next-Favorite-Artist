@@ -12,8 +12,10 @@ import { getUser } from "../Controllers/userController";
 import { getRelatedArtists } from "../Controllers/relatedArtistsController";
 import { getTopRelatedTracks } from "../Controllers/relatedArtistTrackController";
 
-const NUM_TOP_ARTISTS = 10;
-const NUM_REC_ARTISTS = 20;
+import constants from "../__constants/constants";
+
+const NUM_TOP_ARTISTS = constants.NUM_TOP_ARTISTS;
+const NUM_REC_ARTISTS = constants.NUM_REC_ARTISTS;
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const REDIRECT_URI = process.env.REACT_APP_BASE_URL;
@@ -113,32 +115,32 @@ function NextFavArtist() {
     getData();
   }, [token, makeUserAPICalls, makeArtistAPICalls]);
 
-  useEffect(() => {
-    if (!topArtists || !token) return;
-    const getData = async () => {
-      const relatedArtists = await getRelatedArtists(
-        topArtists.map((a) => a.id),
-        token
-      );
-      // console.log(relatedArtists);
-      if (relatedArtists?.status === "success") {
-        setTopRelatedArtistsList(relatedArtists.data);
-      }
-    };
-    getData();
-    // getRelatedArtists(topArtists.map((a) => a.id));
-  }, [topArtists, token]);
-  useEffect(() => {
-    if (!recommendedArtists || !token || !user?.country) return;
-    const getData = async () => {
-      const tracks = await getTopRelatedTracks(recommendedArtists, token, user);
-      if (tracks?.status === "success") {
-        setRecommendedArtistsTracks(tracks.data);
-      }
-    };
-    getData();
-    // getTopTracks(recommendedArtists);
-  }, [recommendedArtists, token, user]);
+  // useEffect(() => {
+  //   if (!topArtists || !token) return;
+  //   const getData = async () => {
+  //     const relatedArtists = await getRelatedArtists(
+  //       topArtists.map((a) => a.id),
+  //       token
+  //     );
+  //     // console.log(relatedArtists);
+  //     if (relatedArtists?.status === "success") {
+  //       setTopRelatedArtistsList(relatedArtists.data);
+  //     }
+  //   };
+  //   getData();
+  //   // getRelatedArtists(topArtists.map((a) => a.id));
+  // }, [topArtists, token]);
+  // useEffect(() => {
+  //   if (!recommendedArtists || !token || !user?.country) return;
+  //   const getData = async () => {
+  //     const tracks = await getTopRelatedTracks(recommendedArtists, token, user);
+  //     if (tracks?.status === "success") {
+  //       setRecommendedArtistsTracks(tracks.data);
+  //     }
+  //   };
+  //   getData();
+  //   // getTopTracks(recommendedArtists);
+  // }, [recommendedArtists, token, user]);
 
   useEffect(() => {
     if (!topRelatedArtistsList) return;
@@ -198,6 +200,7 @@ function NextFavArtist() {
         {token && (
           <div>
             <h2>Recommended Artists</h2>
+            <h3>Due to Spotify API changes, this list will remain empty.</h3>
             <div className="artist-container">
               {displayRecommendedArtists(
                 recommendedArtists,
@@ -235,6 +238,7 @@ function NextFavArtist() {
         return (
           <div>
             <h2 style={{ verticalAlign: "middle" }}>Recommended Artists</h2>
+            <h3>Due to Spotify API changes, this list will remain empty.</h3>
             <div className="artist-container" id="column">
               {displayRecommendedArtists(
                 recommendedArtists,
